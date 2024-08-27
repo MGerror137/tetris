@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import java.util.Random;
 
 import mino.Block;
@@ -29,6 +30,10 @@ public class PlayManager {
 	Mino currentMino;
 	final int MINO_START_X;
 	final int MINO_START_Y;
+	Mino nextMino;
+	final int NEXTMINO_X;
+	final int NEXTMINO_Y;
+	public static ArrayList<Block> staticBlocks = new ArrayList<>();
 	
 	public static int dropInterval = 60;
 	
@@ -41,8 +46,13 @@ public class PlayManager {
 		MINO_START_X = left_x + (WIDTH/2) - Block.SIZE;
 		MINO_START_Y = top_y + Block.SIZE;
 		
+		NEXTMINO_X = right_x + 175;
+		NEXTMINO_Y = top_y + 500;
+		
 		currentMino = pickMino();
 		currentMino.setXY(MINO_START_X, MINO_START_Y);
+		nextMino = pickMino();
+		nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
 	}
 	private Mino pickMino() {
 		Mino mino = null;
@@ -60,7 +70,20 @@ public class PlayManager {
 		return mino;
 	}
 	public void update() {
-		currentMino.update();
+		if(currentMino.active) {
+			currentMino.update();
+		} else {
+			staticBlocks.add(currentMino.b[0]);
+			staticBlocks.add(currentMino.b[1]);
+			staticBlocks.add(currentMino.b[2]);
+			staticBlocks.add(currentMino.b[3]);
+			
+			currentMino = nextMino;
+			currentMino.setXY(MINO_START_X, MINO_START_Y);
+			nextMino = pickMino();
+			nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
+		}
+
 	}
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.WHITE);
@@ -76,6 +99,17 @@ public class PlayManager {
 		
 		if(currentMino != null) {
 			currentMino.draw(g2);
+		}
+		nextMino.draw(g2);
+		for(int i = 0; i < staticBlocks.size(); i++) {
+			staticBlocks.get(i).draw(g2);
+		}
+		g2.setColor(Color.YELLOW);
+		g2.setFont(g2.getFont().deriveFont(50f));
+		if(KeyHandler.pausePressed) {
+			x = left_x + 70;
+			y = top_y + 320;
+			g2.drawString("PAUSED", x, y);
 		}
 	}
 }
