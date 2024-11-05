@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import mino.Block;
+import mino.FiveTest;
 import mino.Mino;
 import mino.Mino_Bar;
 import mino.Mino_L1;
@@ -36,6 +37,15 @@ public class PlayManager {
 	public static ArrayList<Block> staticBlocks = new ArrayList<>();
 	
 	public static int dropInterval = 60;
+	boolean gameOver;
+	
+	boolean effectCounterOn;
+	int effectCounter;
+	ArrayList<Integer> effectY = new ArrayList<>();
+	
+	int level = 1;
+	int lines;
+	int score;
 	
 	public PlayManager() {
 		left_x = (GamePanel.WIDTH/2) - (WIDTH/2);
@@ -73,17 +83,82 @@ public class PlayManager {
 		if(currentMino.active) {
 			currentMino.update();
 		} else {
-			staticBlocks.add(currentMino.b[0]);
-			staticBlocks.add(currentMino.b[1]);
-			staticBlocks.add(currentMino.b[2]);
-			staticBlocks.add(currentMino.b[3]);
+			for(int i = 0; i<currentMino.b.size();i++) {
+				staticBlocks.add(currentMino.b.get(i));
+			}
+			
+			if(currentMino.b.get(0).x == MINO_START_X && currentMino.b.get(0).y == MINO_START_Y) {
+				gameOver = true;
+			}
+			
+			currentMino.deactivating = false;
 			
 			currentMino = nextMino;
 			currentMino.setXY(MINO_START_X, MINO_START_Y);
 			nextMino = pickMino();
 			nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
+			
+			checkDelete();
 		}
 
+	}
+	
+	private void checkDelete() {
+		
+		int x = left_x;
+		int y = top_y;
+		int blockCount = 0;
+		
+		int lineCount = 0;
+		
+		while(x < right_x && y < bottom_y) {
+			
+			for(int i = 0; i < staticBlocks.size();i++) {
+				if(staticBlocks.get(i).x == x && staticBlocks.get(i).y == y) {
+					blockCount++;
+				}
+			}
+			x += Block.SIZE;
+			
+			if (x == right_x) {
+				
+				if(blockCount == 12) {
+					
+					effectCounterOn = true;
+					effectY.add(y);
+					for(int i = staticBlocks.size()-1; i>-1;i--) {
+						if(staticBlocks.get(i).y == y) {
+							staticBlocks.remove(i);
+						}
+					}
+					lineCount++;
+					lines++;
+					
+					if(lines%10 == 0 && dropInterval >1) {
+						level++;
+						if(dropInterval > 10) {
+							dropInterval -= 10;
+						}
+						else {
+							dropInterval -= 1;
+						}
+					}
+					for(int i = 0; i < staticBlocks.size();i++) {
+						if(staticBlocks.get(i).y < y) {
+							staticBlocks.get(i).y += Block.SIZE;
+						}
+					}
+				}
+				blockCount = 0;
+				x = left_x;
+				y += Block.SIZE;
+			}
+		}
+		if(lineCount > 0) {
+			int singleLineScore = 10 * level;
+			score += singleLineScore * lineCount;
+		}
+		
 	}
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.WHITE);
@@ -97,6 +172,12 @@ public class PlayManager {
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.drawString("NEXT", x+60, y+60);
 		
+		g2.drawRect(x, top_y, 250, 300);
+		x += 40;
+		y = top_y + 90;
+		g2.drawString("Level: "+ level, x, y); y+=70;
+		g2.drawString("Lines: "+ lines, x, y); y+=70;
+		g2.drawString("Score: "+ score, x, y);
 		if(currentMino != null) {
 			currentMino.draw(g2);
 		}
@@ -104,8 +185,27 @@ public class PlayManager {
 		for(int i = 0; i < staticBlocks.size(); i++) {
 			staticBlocks.get(i).draw(g2);
 		}
+		
+		if(effectCounterOn) {
+			effectCounter++;
+			g2.setColor(Color.RED);
+			for(int i = 0; i<effectY.size(); i++) {
+				g2.fillRect(left_x, effectY.get(i), WIDTH*effectCounter/6, Block.SIZE);
+			}
+			
+			if(effectCounter == 6) {
+				effectCounterOn = false;
+				effectCounter = 0;
+				effectY.clear();
+			}
+		}
 		g2.setColor(Color.YELLOW);
 		g2.setFont(g2.getFont().deriveFont(50f));
+		if(gameOver) {
+			x = left_x + 25;
+			y = top_y + 320;
+			g2.drawString("GAME OVER", x, y);
+		}
 		if(KeyHandler.pausePressed) {
 			x = left_x + 70;
 			y = top_y + 320;

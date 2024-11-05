@@ -2,12 +2,14 @@ package mino;
 
 import java.awt.Color;
 
-public class Mino_Square extends Mino{
-	public Mino_Square() {
+public class FiveTest extends Mino{
+	public FiveTest() {
 		b.add(new Block(Color.yellow));
 		b.add(new Block(Color.yellow));
 		b.add(new Block(Color.yellow));
 		b.add(new Block(Color.yellow));
+		b.add(new Block(Color.yellow));
+		tempB.add(new Block(Color.yellow));
 		tempB.add(new Block(Color.yellow));
 		tempB.add(new Block(Color.yellow));
 		tempB.add(new Block(Color.yellow));
@@ -23,6 +25,8 @@ public class Mino_Square extends Mino{
 		b.get(2).y = b.get(0).y;
 		b.get(3).x = b.get(0).x + Block.SIZE;
 		b.get(3).y = b.get(0).y + Block.SIZE;
+		b.get(4).x = b.get(0).x + 2 * Block.SIZE;
+		b.get(4).y = b.get(0).y;
 	}
 	
 	public void getDirection1() {

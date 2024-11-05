@@ -5,65 +5,72 @@ import java.awt.Color;
 public class Mino_Z2 extends Mino{
 	
 	public Mino_Z2() {
-		create(Color.GREEN);
+		b.add(new Block(Color.green));
+		b.add(new Block(Color.green));
+		b.add(new Block(Color.green));
+		b.add(new Block(Color.green));
+		tempB.add(new Block(Color.green));
+		tempB.add(new Block(Color.green));
+		tempB.add(new Block(Color.green));
+		tempB.add(new Block(Color.green));
 	}
 	
 	public void setXY(int x, int y) {
-		b[0].x = x;
-		b[0].y = y;
-		b[1].x = b[0].x;
-		b[1].y = b[0].y - Block.SIZE;
-		b[2].x = b[0].x + Block.SIZE;
-		b[2].y = b[0].y;
-		b[3].x = b[0].x + Block.SIZE;
-		b[3].y = b[0].y + Block.SIZE;
+		b.get(0).x = x;
+		b.get(0).y = y;
+		b.get(1).x = b.get(0).x;
+		b.get(1).y = b.get(0).y - Block.SIZE;
+		b.get(2).x = b.get(0).x + Block.SIZE;
+		b.get(2).y = b.get(0).y;
+		b.get(3).x = b.get(0).x + Block.SIZE;
+		b.get(3).y = b.get(0).y + Block.SIZE;
 	}
 	
 	public void getDirection1() {
-		tempB[0].x = b[0].x;
-		tempB[0].y = b[0].y;
-		tempB[1].x = b[0].x;
-		tempB[1].y = b[0].y - Block.SIZE;
-		tempB[2].x = b[0].x + Block.SIZE;
-		tempB[2].y = b[0].y;
-		tempB[3].x = b[0].x + Block.SIZE;
-		tempB[3].y = b[0].y + Block.SIZE;
+		tempB.get(0).x = b.get(0).x;
+		tempB.get(0).y = b.get(0).y;
+		tempB.get(1).x = b.get(0).x;
+		tempB.get(1).y = b.get(0).y - Block.SIZE;
+		tempB.get(2).x = b.get(0).x + Block.SIZE;
+		tempB.get(2).y = b.get(0).y;
+		tempB.get(3).x = b.get(0).x + Block.SIZE;
+		tempB.get(3).y = b.get(0).y + Block.SIZE;
 		
 		updateXY(1);
 	}
 	public void getDirection2() {
-		tempB[0].x = b[0].x;
-		tempB[0].y = b[0].y;
-		tempB[1].x = b[0].x + Block.SIZE;
-		tempB[1].y = b[0].y;
-		tempB[2].x = b[0].x;
-		tempB[2].y = b[0].y + Block.SIZE;
-		tempB[3].x = b[0].x - Block.SIZE;
-		tempB[3].y = b[0].y + Block.SIZE;
+		tempB.get(0).x = b.get(0).x;
+		tempB.get(0).y = b.get(0).y;
+		tempB.get(1).x = b.get(0).x + Block.SIZE;
+		tempB.get(1).y = b.get(0).y;
+		tempB.get(2).x = b.get(0).x;
+		tempB.get(2).y = b.get(0).y + Block.SIZE;
+		tempB.get(3).x = b.get(0).x - Block.SIZE;
+		tempB.get(3).y = b.get(0).y + Block.SIZE;
 		
 		updateXY(2);
 	}
 	public void getDirection3() {
-		tempB[0].x = b[0].x;
-		tempB[0].y = b[0].y;
-		tempB[1].x = b[0].x;
-		tempB[1].y = b[0].y + Block.SIZE;
-		tempB[2].x = b[0].x - Block.SIZE;
-		tempB[2].y = b[0].y;
-		tempB[3].x = b[0].x - Block.SIZE;
-		tempB[3].y = b[0].y - Block.SIZE;
+		tempB.get(0).x = b.get(0).x;
+		tempB.get(0).y = b.get(0).y;
+		tempB.get(1).x = b.get(0).x;
+		tempB.get(1).y = b.get(0).y + Block.SIZE;
+		tempB.get(2).x = b.get(0).x - Block.SIZE;
+		tempB.get(2).y = b.get(0).y;
+		tempB.get(3).x = b.get(0).x - Block.SIZE;
+		tempB.get(3).y = b.get(0).y - Block.SIZE;
 		
 		updateXY(3);
 	}
 	public void getDirection4() {
-		tempB[0].x = b[0].x;
-		tempB[0].y = b[0].y;
-		tempB[1].x = b[0].x - Block.SIZE;
-		tempB[1].y = b[0].y;
-		tempB[2].x = b[0].x;
-		tempB[2].y = b[0].y - Block.SIZE;
-		tempB[3].x = b[0].x + Block.SIZE;
-		tempB[3].y = b[0].y - Block.SIZE;
+		tempB.get(0).x = b.get(0).x;
+		tempB.get(0).y = b.get(0).y;
+		tempB.get(1).x = b.get(0).x - Block.SIZE;
+		tempB.get(1).y = b.get(0).y;
+		tempB.get(2).x = b.get(0).x;
+		tempB.get(2).y = b.get(0).y - Block.SIZE;
+		tempB.get(3).x = b.get(0).x + Block.SIZE;
+		tempB.get(3).y = b.get(0).y - Block.SIZE;
 		
 		updateXY(4);
 	}
